@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <link href="../velement/style.css" rel='stylesheet' />
+</head>
+<body>
+    数量：<input id='listCount' value='20'/>
+    <button id='genBtn'>生成数据</button>
+    排序字段：<input id='sortKey' value='age'/>
+    <button id='sortBtn'>设置排序</button>
+    用时：<b id='duration'>--</b>毫秒
+    <table style='width: 100%;text-align: center;'>
+        <thead>
+            <th>ID(id)</th>
+            <th>姓名(name)</th>
+            <th>年龄(age)</th>
+            <th>体重(weight)</th>
+            <th>身高(hight)</th>
+            <th>当前坐标(coor)</th>
+            <th>今日步数(steps)</th>
+            <th>好友数(friends)</th>
+            <th>爱好数(ins)</th>
+            <th>智商(iq)</th>
+            <th>情商(eq)</th>
+            <th>数学(math)</th>
+            <th>语文(lang)</th>
+            <th>英语(eng)</th>
+            <th>物理(phy)</th>
+            <th>化学(che)</th>
+            <th>生物(bio)</th>
+            <th>计算机(com)</th>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+    <script src='../common.js'></script>
+    <script>
+        (function(){
+            var tbody = document.querySelector('tbody')
+            var sortKey = document.querySelector('#sortKey').value || 'age'
+            var genBtn = document.querySelector('#genBtn')
+            var sortBtn = document.querySelector('#sortBtn')
+            var duration = document.querySelector('#duration')
+            var list = []
+            var sortedList = []
+            
+            function renderTr (tr) {
+                return `<tr>
+                    <td>${tr.id}</td>
+                    <td>${tr.name}</td>
+                    <td>${tr.age}</td>
+                    <td>${tr.weight}</td>
+                    <td>${tr.hight}</td>
+                    <td>${tr.coor}</td>
+                    <td>${tr.steps}</td>
+                    <td>${tr.friends}</td>
+                    <td>${tr.ins}</td>
+                    <td>${tr.iq}</td>
+                    <td>${tr.eq}</td>
+                    <td>${tr.math}</td>
+                    <td>${tr.lang}</td>
+                    <td>${tr.eng}</td>
+                    <td>${tr.phy}</td>
+                    <td>${tr.che}</td>
+                    <td>${tr.bio}</td>
+                    <td>${tr.com}</td>
+                </tr>`
+            }
+
+            function render(data, dom){
+                dom.innerHTML = data.map(item => renderTr(item)).join('')
+            }
+
+            
+            function init () {
+                list = initList(document.querySelector('#listCount').value)
+                sortedList = getListBySort(list, sortKey)
+                countTime(duration, function(){
+                    render(sortedList, tbody)
+                })
+            }
+            init()
+            genBtn.addEventListener('click', init)
+
+            sortBtn.addEventListener('click', () => {
+                var newSortKey = document.querySelector('#sortKey').value || 'age'
+                if (newSortKey !== sortKey) {
+                    sortedList = getListBySort(list, newSortKey)
+                    sortKey = newSortKey
+                }
+                countTime(function(){
+                    render(sortedList.reverse(), tbody)
+                })
+            })
+        })()
+    </script>
+</body>
+</html>
